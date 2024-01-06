@@ -56,7 +56,7 @@ class GeneralConfig(HelperBase, ctypes.LittleEndianStructure):
     ]
 
 
-class GSTAT(HelperBase, ctypes.LittleEndianStructure):
+class GeneralStatus(HelperBase, ctypes.LittleEndianStructure):
     address: int = 0x01
     _pack_ = 1
     _fields_ = [
@@ -67,7 +67,14 @@ class GSTAT(HelperBase, ctypes.LittleEndianStructure):
     ]
 
 
-class IFCNT(HelperBase, ctypes.LittleEndianStructure):
+class IFCounter(HelperBase, ctypes.LittleEndianStructure):
+    """
+    Interface transmission counter. This register becomes
+    incremented with each successful UART interface write access.
+
+    Disabled in SPI operation. The counter wraps around from 255 to 0.
+    """
+
     address: int = 0x02
     _pack_ = 1
     _fields_ = [
@@ -86,7 +93,7 @@ class SlaveConf(HelperBase, ctypes.LittleEndianStructure):
     ]
 
 
-class IOIN(HelperBase, ctypes.LittleEndianStructure):
+class IOStatus(HelperBase, ctypes.LittleEndianStructure):
     address: int = 0x04
     _pack_ = 1  # Pack the structure to 1 byte boundaries
     _fields_ = [
@@ -143,7 +150,7 @@ class TStep(HelperBase, ctypes.LittleEndianStructure):
     ]
 
 
-class TPWMTHRS(HelperBase, ctypes.LittleEndianStructure):
+class TPWMThreshold(HelperBase, ctypes.LittleEndianStructure):
     address: int = 0x13
     _pack_ = 1
     _fields_ = [
@@ -152,7 +159,7 @@ class TPWMTHRS(HelperBase, ctypes.LittleEndianStructure):
     ]
 
 
-class TCOOLTHRS(HelperBase, ctypes.LittleEndianStructure):
+class TCoolThreshold(HelperBase, ctypes.LittleEndianStructure):
     address: int = 0x14
     _pack_ = 1
     _fields_ = [
@@ -161,7 +168,7 @@ class TCOOLTHRS(HelperBase, ctypes.LittleEndianStructure):
     ]
 
 
-class THIGH(HelperBase, ctypes.LittleEndianStructure):
+class THigh(HelperBase, ctypes.LittleEndianStructure):
     address: int = 0x15
     _pack_ = 1
     _fields_ = [
@@ -380,7 +387,7 @@ class XTarget(HelperBase, ctypes.LittleEndianStructure):
     ]
 
 
-class VDCMIN(HelperBase, ctypes.LittleEndianStructure):
+class VDCMin(HelperBase, ctypes.LittleEndianStructure):
     """
     Automatic commutation DcStep becomes enabled above
     velocity VDCMIN (unsigned) (only when using internal ramp
@@ -611,7 +618,7 @@ class EncMode(HelperBase, ctypes.LittleEndianStructure):
     ]
 
 
-class XEnc(HelperBase, ctypes.LittleEndianStructure):
+class XEncoder(HelperBase, ctypes.LittleEndianStructure):
     """
     Actual encoder postion (signed)
     """
@@ -623,7 +630,7 @@ class XEnc(HelperBase, ctypes.LittleEndianStructure):
     ]
 
 
-class EncConst(HelperBase, ctypes.LittleEndianStructure):
+class EncoderConst(HelperBase, ctypes.LittleEndianStructure):
     """
     Accumulation constant (signed)
     16 bit integer part, 16 bit fractional part
@@ -643,7 +650,7 @@ class EncConst(HelperBase, ctypes.LittleEndianStructure):
     ]
 
 
-class EncStatus(HelperBase, ctypes.LittleEndianStructure):
+class EncoderStatus(HelperBase, ctypes.LittleEndianStructure):
     """
     Encoder status
     bit 0: n_event
@@ -661,7 +668,7 @@ class EncStatus(HelperBase, ctypes.LittleEndianStructure):
     ]
 
 
-class EncLatch(HelperBase, ctypes.LittleEndianStructure):
+class EncoderLatch(HelperBase, ctypes.LittleEndianStructure):
     """
     Encoder position X_ENC latched on N event
     """
@@ -842,7 +849,7 @@ class MslutStart(HelperBase, ctypes.LittleEndianStructure):
     ]
 
 
-class MSCNT(HelperBase, ctypes.LittleEndianStructure):
+class MicrostepCounter(HelperBase, ctypes.LittleEndianStructure):
     """
     Microstep counter. Indicates actual position
     in the microstep table for CUR_A. CUR_B uses
@@ -860,7 +867,7 @@ class MSCNT(HelperBase, ctypes.LittleEndianStructure):
     ]
 
 
-class MSCURACT(HelperBase, ctypes.LittleEndianStructure):
+class MicrostepCurrent(HelperBase, ctypes.LittleEndianStructure):
     """
     Actual microstep Current
     bit 8… 0: CUR_B (signed):
@@ -885,7 +892,7 @@ class MSCURACT(HelperBase, ctypes.LittleEndianStructure):
 
 class ChopConf(HelperBase, ctypes.LittleEndianStructure):
     """
-    Chopper configuration
+    Chopper configuration for automatic current
     """
 
     address: int = 0x6C
@@ -913,7 +920,7 @@ class ChopConf(HelperBase, ctypes.LittleEndianStructure):
 
 class CoolConf(HelperBase, ctypes.LittleEndianStructure):
     """
-    CoolStep configuration
+    CoolStep configuration - smart current control
     """
 
     address: int = 0x6D
@@ -934,7 +941,7 @@ class CoolConf(HelperBase, ctypes.LittleEndianStructure):
     ]
 
 
-class DCCtrl(HelperBase, ctypes.LittleEndianStructure):
+class DCControl(HelperBase, ctypes.LittleEndianStructure):
     """
     DC motor control
     """
@@ -949,7 +956,7 @@ class DCCtrl(HelperBase, ctypes.LittleEndianStructure):
     ]
 
 
-class DRVStatus(HelperBase, ctypes.LittleEndianStructure):
+class DriverStatus(HelperBase, ctypes.LittleEndianStructure):
     """
     DRV_STATUS - StallGuard2 Value and Driver Error Flags
     """
@@ -1004,9 +1011,19 @@ class PWMScale(HelperBase, ctypes.LittleEndianStructure):
     ]
 
 
-class ENCMCtrl(HelperBase, ctypes.LittleEndianStructure):
+class EncoderModeConf(HelperBase, ctypes.LittleEndianStructure):
     """
-    Encoder position compare value
+    Encoder mode configuration for a special
+    mode (enc_commutation), not for normal
+    use.
+    Bit 0: inv: Invert encoder inputs
+    Bit 1: maxspeed: Ignore Step input. If
+    set, the hold current IHOLD
+    determines the motor current,
+    unless a step source is activated.
+    The direction in this mode is determined by
+    the shaft bit in GCONF or by the inv bit.
+
     """
 
     address: int = 0x72
@@ -1033,7 +1050,7 @@ class LostSteps(HelperBase, ctypes.LittleEndianStructure):
 class TMC5130:
     WRITE_MASK = 0x80
     READ_MASK = 0x00
-    RPS_TO_RPM = 60
+    SECONDS_PER_MINUTE = 60
 
     def __init__(
         self,
@@ -1063,6 +1080,9 @@ class TMC5130:
             "ramp_mode": 1,
             "rsense": 0.15,  # Sense Resistor Value
             "current_mA": {"hold_mA": 50, "run_mA": 200},
+            "driver": {
+                "microstep": 256,
+            },
             "motion": {
                 "velocity_rpm": 0,
                 "acceleration_rpm": 60,
@@ -1071,7 +1091,6 @@ class TMC5130:
             "motor": {
                 "steps_per_rev": 200,  # Steps per revolution
                 "units_per_rev": 1.0,  # How far linear carriage moves per revolution of the shaft
-                "microstep": 256,  # Microstepping mode
             },
         }
 
@@ -1105,17 +1124,17 @@ class TMC5130:
         # rotations / s to ustep/s = rps * microstep * steps_per_rev
         # rotations / s v[rps] = v[µsteps/s] / Microstep / Full step per rotation
         # self._from_rps is used to rps input to tmc velocity register - write to register
-        self._from_rps = lambda rps: self._ustep_t(rps * self.config.motor.microstep * self.config.motor.steps_per_rev)
+        self._from_rps = lambda rps: self._ustep_t(rps * self.config.driver.microstep * self.config.motor.steps_per_rev)
 
         # rotations / s^2 a[rps^2] = a[µsteps/s^2] / Microstep / Full step per rotation
         # self._from_rps2 is used to rps^2 input to tmc acceleration register - write to register
-        self._from_rps2 = lambda rps2: self._ustep_ta2(rps2 * self.config.motor.microstep * self.config.motor.steps_per_rev)
+        self._from_rps2 = lambda rps2: self._ustep_ta2(rps2 * self.config.driver.microstep * self.config.motor.steps_per_rev)
 
         # Ramp steps[µsteps]  = rs = (v[5130A])^2 / a[5130A] / 2^8
         # Microsteps during linear acceleration ramp (assuming acceleration from 0 to v)
         self._ramp_steps = lambda v, a: (self._ustep_s(v)) ** 2 / self._ustep_s2(a) / 2**8
         #  2^24 / (VACTUAL*256/USC)
-        self._tstep = lambda vactual: 2**24 / (vactual * 256 / self.config.motor.microstep)
+        self._tstep = lambda vactual: 2**24 / (vactual * 256 / self.config.driver.microstep)
 
         # Actual update frequency
         self._ramp_rate_hz = self._fclk / 512
@@ -1123,7 +1142,7 @@ class TMC5130:
         # Custom Conversions
         # mm or deg -> ustep
         self._from_mm_deg = (
-            lambda mm_deg: mm_deg * self.config.motor.steps_per_rev * self.config.motor.microstep * self.config.motor.units_per_rev
+            lambda mm_deg: mm_deg * self.config.motor.steps_per_rev * self.config.driver.microstep * self.config.motor.units_per_rev
         )
         # mm/s or deg/s -> ustep/s -> ustep/t
         self._from_mms_degs = lambda mms_degs: self._ustep_t(self._from_mm_deg(mms_degs))
@@ -1132,7 +1151,7 @@ class TMC5130:
 
         # ustep -> mm or deg
         self._to_mm_deg = lambda ustep: ustep / (
-            self.config.motor.steps_per_rev * self.config.motor.microstep * self.config.motor.units_per_rev
+            self.config.motor.steps_per_rev * self.config.driver.microstep * self.config.motor.units_per_rev
         )
         # ustep/t -> ustep/s -> mm/s or deg/s
         self._to_mms_degs = lambda ustep_t: self._to_mm_deg(self._ustep_s(ustep_t))
@@ -1177,8 +1196,8 @@ class TMC5130:
         general_config = GeneralConfig()
         chop_config = ChopConf()
         pwm_mode_chop = PWMConf()
-        tpwm_threshold = TPWMTHRS()
-        cool_threshold = TCOOLTHRS()
+        tpwm_threshold = TPWMThreshold()
+        cool_threshold = TCoolThreshold()
         power_down = TPowerDown()  # Power down in standstill
         power_down.tpowerdown = 0x10
         ramp_mode = RampMode()
@@ -1218,13 +1237,13 @@ class TMC5130:
         self._write(ChopConf.address, chop_config.get_register())
         self._write(CoolConf.address, cool_conf.get_register())
         self._write(PWMConf.address, pwm_mode_chop.get_register())
-        self._write(TPWMTHRS.address, tpwm_threshold.get_register())
-        self._write(TCOOLTHRS.address, cool_threshold.get_register())
+        self._write(TPWMThreshold.address, tpwm_threshold.get_register())
+        self._write(TCoolThreshold.address, cool_threshold.get_register())
         self._write(TPowerDown.address, power_down.get_register())
         self._write(RampMode.address, ramp_mode.get_register())
         self.set_current(**self.config.get("current_mA", {}))
         self.set_target_position(0)
-        self.get_current_position(0)
+        self.set_current_position(0)
         self.set_motion_rpm(velocity_rpm=0, acceleration_rpm=0, deceleration_rpm=0)
 
     def set_current(self, run_mA: int, hold_mA: int):
@@ -1255,13 +1274,13 @@ class TMC5130:
         """
         Set the motion for the TMC Driver
         """
-        velocity = self._from_rps(velocity_rpm / self.RPS_TO_RPM)
-        acceleration = self._from_rps2(acceleration_rpm / self.RPS_TO_RPM)
-        deceleration = self._from_rps2(deceleration_rpm / self.RPS_TO_RPM)
+        velocity = self._from_rps(velocity_rpm / self.SECONDS_PER_MINUTE)
+        acceleration = self._from_rps2(acceleration_rpm / self.SECONDS_PER_MINUTE)
+        deceleration = self._from_rps2(deceleration_rpm / self.SECONDS_PER_MINUTE)
         print(f"Velocity: {velocity} Acceleration: {acceleration} Deceleration: {deceleration}")
         self.set_motion(velocity, acceleration, deceleration)
 
-    def set_motion_mms_degs(
+    def set_motion_units(
         self,
         velocity_mms_degs: float,
         acceleration_mms_degs: float,
@@ -1281,8 +1300,16 @@ class TMC5130:
         velocity: int | float,
         acceleration: int | float,
         deceleration: int | float,
-        s1_s1=0.5,
+        stage_1_2=1.0,
     ):
+        """
+        Set the motion for the TMC Driver
+        velocity: Velocity in ustep/s
+        acceleration: Acceleration in ustep/s^2
+        deceleration: Deceleration in ustep/s^2
+        stage_1_2: TMC5130 has two acceleration stages for 6 point of motion
+        This ratio determines the split between the two stages.
+        """
         # Set the motion
         _motion = AMax()
         _motion.amax = int(acceleration)
@@ -1297,15 +1324,15 @@ class TMC5130:
         self._write(VMax.address, _motion.get_register())
 
         _motion = A1()
-        _motion.a1 = int(acceleration * s1_s1)
+        _motion.a1 = int(acceleration * stage_1_2)
         self._write(A1.address, _motion.get_register())
 
         _motion = D1()
-        _motion.d1 = int(deceleration * s1_s1)
+        _motion.d1 = int(deceleration * stage_1_2)
         self._write(D1.address, _motion.get_register())
 
         _motion = V1()
-        _motion.v1 = int(velocity * s1_s1)
+        _motion.v1 = int(velocity * stage_1_2)
         self._write(V1.address, _motion.get_register())
 
         _motion = VStart()
@@ -1324,7 +1351,7 @@ class TMC5130:
         """
         Set the velocity of the motor
         """
-        velocity = self._from_rps(velocity_rpm / self.RPS_TO_RPM)
+        velocity = self._from_rps(velocity_rpm / self.SECONDS_PER_MINUTE)
         _vmax = VMax()
         _vmax.vmax = int(velocity)
         self._write(VMax.address, _vmax.get_register())
@@ -1333,16 +1360,16 @@ class TMC5130:
         """
         Read the TMC5130 version
         """
-        _, data = self._read(IOIN.address)
-        driver_info = IOIN.from_buffer(data)
+        _, data = self._read(IOStatus.address)
+        driver_info = IOStatus.from_buffer(data)
         return driver_info.version
 
     def get_io_status(self):
         """
         Read the TMC5130 IO Status
         """
-        _, data = self._read(IOIN.address)
-        io_status = IOIN.from_buffer(data)
+        _, data = self._read(IOStatus.address)
+        io_status = IOStatus.from_buffer(data)
 
         # Copy all of the values to a dictionary
         io_dict = {
@@ -1379,7 +1406,7 @@ class TMC5130:
         xtarget.xtarget = xactual.xactual
         self._write(XTarget.address, xtarget.get_register())
 
-    def get_current_position(self, position_mm_deg: float):
+    def get_current_position(self):
         """
         Get the current position
         """

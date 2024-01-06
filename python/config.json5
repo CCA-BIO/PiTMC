@@ -1,19 +1,21 @@
 {
     // 0: Positioning Mode, 1: Velocity Mode +, 2: Velocity Mode -, 3: Hold Mode
-    "ramp_mode" : 1,
+    "ramp_mode": 1,
     "rsense": 0.15,  // Sense Resistor Value
-    "current_mA" : {
-        "hold_mA" : 50,
-        "run_mA" : 200
+    "current_mA": {
+        "hold_mA": 50, 
+        "run_mA": 200
     },
-    "motion" : {
-        "velocity_rpm" : 0,
-        "acceleration_rpm" : 60,
-        "deceleration_rpm" : 60
+    "driver":{
+        "microstep": 256, 
     },
-    "motor" : {
-        "steps_per_rev" : 200, //Steps per revolution
-        "units_per_rev" : 1.0, //How far linear carriage moves per revolution of the shaft
-        "microstep" : 256,     // Microstepping mode
-    } 
+    "motion": {
+        "velocity_rpm": 0,
+        "acceleration_rpm": 60,
+        "deceleration_rpm": 60,
+    },
+    "motor": {
+        "steps_per_rev": 200,  // Steps per revolution
+        "units_per_rev": 1.0,  // How far linear carriage moves per revolution of the shaft
+    },
 }
